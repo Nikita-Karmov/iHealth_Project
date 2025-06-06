@@ -18,7 +18,8 @@ class CategoryController extends Controller {
                 throw new \Exception("Категория не найдена");
             }
 
-            $products = Product::getByCategorySlug($slug);
+            $sort = $_GET['sort'] ?? null;
+            $products = Product::getByCategorySlug($slug, $sort);
         } catch (\Exception $e) {
             error_log("Ошибка категории: " . $e->getMessage());
             $error = "Не удалось загрузить категорию. Попробуйте позже.";

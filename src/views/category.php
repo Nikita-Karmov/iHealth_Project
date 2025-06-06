@@ -1,10 +1,14 @@
 <?php include __DIR__ . '/partials/header.php'; ?>
 
+
 <main class="category-page">
     <?php if (!empty($error)): ?>
         <div class="error-message"><?= htmlspecialchars($error) ?></div>
     <?php else: ?>
-        <h1><?= htmlspecialchars($category['name']) ?></h1>
+        <div class="sort-buttons">
+            <a href="/category?category=<?= urlencode($category['slug']) ?>&sort=asc" class="sort-btn">Сначала дешёвые</a>
+            <a href="/category?category=<?= urlencode($category['slug']) ?>&sort=desc" class="sort-btn">Сначала дорогие</a>
+        </div>
 
         <?php if (!empty($category['description'])): ?>
             <p class="category-description"><?= htmlspecialchars($category['description']) ?></p>

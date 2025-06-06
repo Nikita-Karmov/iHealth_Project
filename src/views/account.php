@@ -66,8 +66,9 @@
         <div class="error-message"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
-    <p>Имя: <?= $user['full_name'] ?></p> 
-    <p>Email: <?= $user['email'] ?></p>
+    <p>Имя: <?= $user && isset($user['full_name']) ? $user['full_name'] : '' ?></p>
+    <p>Email: <?= $user && isset($user['email']) ? $user['email'] : '' ?></p>
+
     
     <!-- вот как защитить  -->
     <!-- <p>Имя: <?= htmlspecialchars($user['full_name']) ?></p>  -->

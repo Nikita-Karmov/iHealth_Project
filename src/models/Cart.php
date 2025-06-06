@@ -35,19 +35,26 @@ class Cart {
             $stmt->execute([$cartId, $productId, $quantity]);
         }
     }
-    public static function getUserCartItems($userId) {
-        $cartId = self::getOrCreateActiveCart($userId);
-        $db = Database::getConnection();
+    public static function getUserCartItems($userId, $sort = null) {
+        $db = \Database::getConnection();
 
-        $stmt = $db->prepare("
-            SELECT ci.product_id, ci.quantity, p.name, p.price, p.image_url 
-            FROM cart_items ci
-            JOIN products p ON ci.product_id = p.product_id
-            WHERE ci.cart_id = ?
-        ");
-        $stmt->execute([$cartId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "SELECT p.product_id, p.name, p.price, p.image_url, ci.quantity
+                FROM cart_items ci
+                JOIN products p ON ci.product_id = p.product_id
+                JOIN carts c ON ci.cart_id = c.cart_id
+                WHERE c.user_id = ? AND c.is_active = true";
+
+        if ($sort === 'asc') {
+            $sql .= " ORDER BY p.price ASC";
+        } elseif ($sort === 'desc') {
+            $sql .= " ORDER BY p.price DESC";
+        }
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$userId]);
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
 
     
     public static function updateQuantity($userId, $productId, $quantity) {
@@ -68,6 +75,18 @@ class Cart {
                 $stmt = $db->prepare("DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?");
                 $stmt->execute([$cart['cart_id'], $productId]);
             }
+        }
+    }
+    public static function removeFromCart($userId, $productId) {
+        $db = Database::getConnection();
+
+        $stmt = $db->prepare("SELECT cart_id FROM carts WHERE user_id = ? AND is_active = TRUE");
+        $stmt->execute([$userId]);
+        $cart = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($cart) {
+            $stmt = $db->prepare("DELETE FROM cart_items WHERE cart_id = ? AND product_id = ?");
+            $stmt->execute([$cart['cart_id'], $productId]);
         }
     }
 

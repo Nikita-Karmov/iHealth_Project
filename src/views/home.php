@@ -38,22 +38,23 @@
 </div>
 
 <div class="grid-4-column">
-    <div class="grid-item">
+    <a href="/category?category=forwoman" class="grid-item">
         <img src="images/women-health.jpg" alt="Женское здоровье">
-    </div>
-    <div class="grid-item">
+    </a>
+    <a href="/category?category=omega3" class="grid-item">
         <img src="images/memory.jpg" alt="Память и внимание">
-    </div>
-    <div class="grid-item">
+    </a>
+    <a href="/category?category=magnesium" class="grid-item">
         <img src="images/sleep.jpg" alt="Сон">
-    </div>
-    <div class="grid-item">
+    </a>
+    <a href="/category?category=forman" class="grid-item">
         <img src="images/men-health.jpg" alt="Мужское здоровье">
-    </div>
-    <div class="grid-item">
+    </a>
+    <a href="/category?category=zhelezo" class="grid-item">
         <img src="images/digestion.jpg" alt="Пищеварение">
-    </div>
+    </a>
 </div>
+
 
 <!-- Секция со статьями -->
 <section class="articles-section">

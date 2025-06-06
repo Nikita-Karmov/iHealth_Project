@@ -1,7 +1,22 @@
 /* style.css */
 
 /* Основные стили */
-
+.sort-buttons {
+    text-align: center;
+    margin: 1rem 0;
+}
+.sort-btn {
+    display: inline-block;
+    background-color: #5F6737;
+    color: #fff;
+    padding: 0.5rem 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    margin: 0 0.5rem;
+}
+.sort-btn:hover {
+    background-color: #3f4621;
+}
 
 /* Стили для хедера */
 .header {

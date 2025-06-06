@@ -31,9 +31,29 @@ class CartController extends Controller {
             exit;
         }
 
-        $items = Cart::getUserCartItems($_SESSION['user_id']);
-        $this->view('cart', ['items' => $items]);
+        $sort = $_GET['sort'] ?? null; // 'asc' или 'desc'
+        $items = Cart::getUserCartItems($_SESSION['user_id'], $sort);
+        $this->view('cart', ['items' => $items, 'sort' => $sort]);
     }
+
+    public function remove() {
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $productId = $_POST['product_id'] ?? null;
+
+        if ($productId) {
+            \App\Models\Cart::removeFromCart($userId, (int)$productId);
+        }
+
+        header('Location: /cart');
+        exit;
+    }
+
+
     public function updateQuantity() {
         if (!isset($_SESSION['user_id'])) {
             header('Location: /login');

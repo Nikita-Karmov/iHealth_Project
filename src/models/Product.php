@@ -5,16 +5,27 @@ use Database;
 use PDO;
 
 class Product {
-    public static function getByCategorySlug($slug) {
+    public static function getByCategorySlug($slug, $sort = null) {
         $db = Database::getConnection();
-        $stmt = $db->prepare("
+
+        $sql = "
             SELECT p.* 
             FROM products p
             JOIN product_category pc ON p.product_id = pc.product_id
             JOIN categories c ON pc.category_id = c.category_id
             WHERE c.slug = ?
-            ORDER BY p.name
-        ");
+        ";
+
+        // Добавляем сортировку
+        if ($sort === 'asc') {
+            $sql .= " ORDER BY p.price ASC";
+        } elseif ($sort === 'desc') {
+            $sql .= " ORDER BY p.price DESC";
+        } else {
+            $sql .= " ORDER BY p.name";
+        }
+
+        $stmt = $db->prepare($sql);
         $stmt->execute([$slug]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
