@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<database>
+    <host>db</host>
+    <dbname>ihealth</dbname>
+    <user>ihealth_user</user>
+    <password>ihealth_pass</password>
+    <port>5432</port>
+</database>
