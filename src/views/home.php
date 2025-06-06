@@ -12,17 +12,17 @@
     </a>
 
     <a href="/category?category=zhelezo" class="category-item">
-        <img src="/images/products/zhelezo.jpg" class="category-img" alt="Железо">
+        <img src="/images/products/zhelezo_asd.jpg" class="category-img" alt="Железо">
         <span class="category-caption">Железо</span>
     </a>
 
     <a href="/category?category=forwoman" class="category-item">
-        <img src="/images/products/woman_health.png" class="category-img" alt="Комплекс для женщин">
+        <img src="/images/products/woman_health.jpg" class="category-img" alt="Комплекс для женщин">
         <span class="category-caption">Комплекс для женщин</span>
     </a>
 
     <a href="/category?category=forman" class="category-item">
-        <img src="/images/products/man_pwr.png" class="category-img" alt="Комплекс для мужчин">
+        <img src="/images/products/man_pwr.jpg" class="category-img" alt="Комплекс для мужчин">
         <span class="category-caption">Комплекс для мужчин</span>
     </a>
 
@@ -32,7 +32,7 @@
     </a>
 
     <a href="/category?category=omega3" class="category-item">
-        <img src="/images/products/omega3_california.jpg" class="category-img" alt="Омега-3">
+        <img src="/images/products/omega3_californiaa.jpg" class="category-img" alt="Омега-3">
         <span class="category-caption">Омега-3</span>
     </a>
 </div>

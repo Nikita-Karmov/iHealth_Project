@@ -39,9 +39,8 @@
             <?php endforeach; ?>
         </div>
 
-        <form action="/cart/clear" method="post" onsubmit="return confirm('Оформить заказ?');">
-            <button type="submit" class="clear-cart-btn">Оформить заказ</button>
-        </form>
+<a href="/ordering" class="clear-cart-btn" style="display:inline-block; text-align:center;">Оформить заказ</a>
+
     <?php endif; ?>
 </main>
 
