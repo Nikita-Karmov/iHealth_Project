@@ -1,13 +1,13 @@
 <?php include __DIR__ . '/partials/header.php'; ?>
 
 <div class="categories">
-    <a href="/category?category=vitamin-c" class="category-item">
+    <a href="/category?category=vitamin_c" class="category-item">
         <img src="/images/products/vitamin-c.jpg" class="category-img" alt="Витамин C">
         <span class="category-caption">Витамин C</span>
     </a>
 
-    <a href="/category?category=vitamin-d" class="category-item">
-        <img src="/images/vitamin-d.jpg" class="category-img" alt="Витамин D">
+    <a href="/category?category=vitamin_d" class="category-item">
+        <img src="/images/products/vitamin-d.jpg" class="category-img" alt="Витамин D">
         <span class="category-caption">Витамин D</span>
     </a>
 
@@ -16,17 +16,17 @@
         <span class="category-caption">Железо</span>
     </a>
 
-    <a href="/category?category=forwoman" class="category-item">
+    <a href="/category?category=woman_health" class="category-item">
         <img src="/images/products/woman_health.jpg" class="category-img" alt="Комплекс для женщин">
         <span class="category-caption">Комплекс для женщин</span>
     </a>
 
-    <a href="/category?category=forman" class="category-item">
+    <a href="/category?category=man_health" class="category-item">
         <img src="/images/products/man_pwr.jpg" class="category-img" alt="Комплекс для мужчин">
         <span class="category-caption">Комплекс для мужчин</span>
     </a>
 
-    <a href="/category?category=magnesium" class="category-item">
+    <a href="/category?category=magni" class="category-item">
         <img src="/images/products/magni_pwr.png" class="category-img" alt="Магний">
         <span class="category-caption">Магний</span>
     </a>

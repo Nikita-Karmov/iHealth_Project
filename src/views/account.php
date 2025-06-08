@@ -71,8 +71,8 @@
 
     
     <!-- вот как защитить  -->
-    <!-- <p>Имя: <?= htmlspecialchars($user['full_name']) ?></p>  -->
-    <!--<p>Email: <?= htmlspecialchars($user['email']) ?></p> -->
+    <!-- <p>Имя: <?= htmlspecialchars($user['full_name']) ?></p>
+    <p>Email: <?= htmlspecialchars($user['email']) ?></p> -->
     <a href="/logout">Выйти</a>
 
     <form action="/account/update" method="post" class="account-form">

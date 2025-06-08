@@ -31,4 +31,40 @@ class CategoryController extends Controller {
             'error' => $error
         ]);
     }
+
+    public function exportXml() {
+        $slug = $_GET['category'] ?? '';
+        
+        try {
+            $category = Category::findBySlug($slug);
+            if (!$category) {
+                throw new \Exception("Категория не найдена");
+            }
+
+            $products = Product::getByCategorySlug($slug);
+
+            // Создаём корневой XML-элемент
+            $xml = new \SimpleXMLElement('<products/>');
+
+            foreach ($products as $product) {
+                $productXml = $xml->addChild('product');
+                $productXml->addChild('id', $product['product_id']);
+                $productXml->addChild('name', htmlspecialchars($product['name']));
+                $productXml->addChild('description', htmlspecialchars($product['description']));
+                $productXml->addChild('price', $product['price']);
+                $productXml->addChild('image', '/images/products/' . $product['image_url']);
+            }
+
+            // Заголовки для загрузки
+            header('Content-Type: application/xml; charset=utf-8');
+            header('Content-Disposition: attachment; filename="category_' . $slug . '_products.xml"');
+
+            echo $xml->asXML();
+            exit;
+
+        } catch (\Exception $e) {
+            http_response_code(500);
+            echo "Ошибка: " . $e->getMessage();
+        }
+    }
 }

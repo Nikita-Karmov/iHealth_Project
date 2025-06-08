@@ -6,8 +6,10 @@
         <div class="error-message"><?= htmlspecialchars($error) ?></div>
     <?php else: ?>
         <div class="sort-buttons">
-            <a href="/category?category=<?= urlencode($category['slug']) ?>&sort=asc" class="sort-btn">Сначала дешёвые</a>
-            <a href="/category?category=<?= urlencode($category['slug']) ?>&sort=desc" class="sort-btn">Сначала дорогие</a>
+            <?php $currentSlug = htmlspecialchars($_GET['category'] ?? ''); ?>
+            <a href="/category?category=<?= $currentSlug ?>&sort=asc" class="sort-btn">Сначала дешёвые</a>
+            <a href="/category?category=<?= $currentSlug ?>&sort=desc" class="sort-btn">Сначала дорогие</a>
+            <a href="/category/export-xml?category=<?= $currentSlug ?>" class="export-btn">Экспорт в XML</a>
         </div>
 
         <?php if (!empty($category['description'])): ?>

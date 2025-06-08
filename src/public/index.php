@@ -21,7 +21,10 @@ $router = new Router();
 
 $router->add('/ordering', 'OrderController@showForm');
 $router->add('/', 'HomeController@index');
+
 $router->add('/category', 'CategoryController@show');
+$router->add('/category/export-xml', 'CategoryController@exportXml');
+
 $router->add('/catalog', 'CatalogController@index'); 
 $router->add('/search', 'SearchController@search');
 
