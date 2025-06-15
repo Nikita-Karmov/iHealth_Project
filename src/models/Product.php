@@ -16,7 +16,6 @@ class Product {
             WHERE c.slug = ?
         ";
 
-        // Добавляем сортировку
         if ($sort === 'asc') {
             $sql .= " ORDER BY p.price ASC";
         } elseif ($sort === 'desc') {
@@ -37,15 +36,21 @@ class Product {
     }
 
     public static function search($query) {
-    $db = Database::getConnection();
-    $stmt = $db->prepare("
-        SELECT * FROM products
-        WHERE name ILIKE ? OR description ILIKE ?
-        ORDER BY name
-    ");
-    $q = '%' . $query . '%';
-    $stmt->execute([$q, $q]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+            SELECT * FROM products
+            WHERE name ILIKE ? OR description ILIKE ?
+            ORDER BY name
+        ");
+        $q = '%' . $query . '%';
+        $stmt->execute([$q, $q]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
+    public static function getById($productId) {
+        $db = \Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM products WHERE product_id = ?");
+        $stmt->execute([$productId]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
 }

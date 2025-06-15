@@ -8,33 +8,73 @@ class CartController extends Controller {
 
     public function add() {
         $productId = $_POST['product_id'] ?? null;
-        $userId = $_SESSION['user_id'] ?? null;
 
-        if (!$productId || !is_numeric($productId)) {
+        if (!$productId) {
             http_response_code(400);
-            echo "Некорректный товар";
+            echo "Missing product ID";
             return;
         }
 
-        Cart::addToCart($userId, (int)$productId);
-        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/cart'));
+        $quantity = 1;
+
+        if (isset($_SESSION['user_id'])) {
+            $userId = $_SESSION['user_id'];
+            \App\Models\Cart::addToCart($userId, (int)$productId, $quantity);
+        } else {
+            if (!isset($_SESSION['cart'])) {
+                $_SESSION['cart'] = [];
+            }
+
+            if (isset($_SESSION['cart'][$productId])) {
+                $_SESSION['cart'][$productId] += $quantity;
+            } else {
+                $_SESSION['cart'][$productId] = $quantity;
+            }
+        }
+
+        header('Location: /cart');
         exit;
     }
 
     public function showCart() {
-        $userId = $_SESSION['user_id'] ?? null;
         $sort = $_GET['sort'] ?? null;
 
-        $items = Cart::getUserCartItems($userId, $sort);
+        if (isset($_SESSION['user_id'])) {
+            // Авторизованный — читаем из БД
+            $items = \App\Models\Cart::getUserCartItems($_SESSION['user_id'], $sort);
+        } else {
+            // Гость — читаем из $_SESSION['cart']
+            $items = [];
+
+            if (!empty($_SESSION['cart'])) {
+                foreach ($_SESSION['cart'] as $productId => $qty) {
+                    $product = \App\Models\Product::getById($productId);
+                    if ($product) {
+                        $product['quantity'] = $qty;
+                        $items[] = $product;
+                    }
+                }
+
+                if ($sort === 'asc') {
+                    usort($items, fn($a, $b) => $a['price'] <=> $b['price']);
+                } elseif ($sort === 'desc') {
+                    usort($items, fn($a, $b) => $b['price'] <=> $a['price']);
+                }
+            }
+        }
+
         $this->view('cart', ['items' => $items, 'sort' => $sort]);
     }
 
     public function remove() {
         $productId = $_POST['product_id'] ?? null;
-        $userId = $_SESSION['user_id'] ?? null;
 
         if ($productId) {
-            Cart::removeFromCart($userId, (int)$productId);
+            if (isset($_SESSION['user_id'])) {
+                Cart::removeFromCart($_SESSION['user_id'], (int)$productId);
+            } else {
+                unset($_SESSION['cart'][$productId]);
+            }
         }
 
         header('Location: /cart');
@@ -42,12 +82,19 @@ class CartController extends Controller {
     }
 
     public function updateQuantity() {
-        $userId = $_SESSION['user_id'] ?? null;
         $productId = $_POST['product_id'] ?? null;
         $quantity = $_POST['quantity'] ?? null;
 
         if ($productId && is_numeric($quantity)) {
-            Cart::updateQuantity($userId, (int)$productId, (int)$quantity);
+            if (isset($_SESSION['user_id'])) {
+                Cart::updateQuantity($_SESSION['user_id'], (int)$productId, (int)$quantity);
+            } else {
+                if ((int)$quantity > 0) {
+                    $_SESSION['cart'][$productId] = (int)$quantity;
+                } else {
+                    unset($_SESSION['cart'][$productId]);
+                }
+            }
         }
 
         header('Location: /cart');
@@ -55,8 +102,12 @@ class CartController extends Controller {
     }
 
     public function clear() {
-        $userId = $_SESSION['user_id'] ?? null;
-        Cart::clearCart($userId);
+        if (isset($_SESSION['user_id'])) {
+            Cart::clearCart($_SESSION['user_id']);
+        } else {
+            unset($_SESSION['cart']);
+        }
+
         header('Location: /cart');
         exit;
     }

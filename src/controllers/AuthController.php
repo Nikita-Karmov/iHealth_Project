@@ -49,6 +49,12 @@ class AuthController extends Controller {
             }
 
             $_SESSION['user_id'] = $userId;
+            if (!empty($_SESSION['cart'])) {
+                foreach ($_SESSION['cart'] as $productId => $qty) {
+                    \App\Models\Cart::addToCart($userId, (int)$productId, (int)$qty);
+                }
+                unset($_SESSION['cart']);
+            }
             header('Location: /');
             exit;
         } catch (\Exception $e) {
