@@ -16,11 +16,12 @@ require_once __DIR__ . '/../controllers/SearchController.php';
 require_once __DIR__ . '/../controllers/CartController.php';
 require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/OrderController.php';
-
+require_once __DIR__ . '/../models/Order.php';
 $router = new Router();
 
 $router->add('/ordering', 'OrderController@showForm');
 $router->add('/', 'HomeController@index');
+$router->add('/order/place', 'OrderController@placeOrder', 'POST');
 
 $router->add('/category', 'CategoryController@show');
 $router->add('/category/export-xml', 'CategoryController@exportXml');

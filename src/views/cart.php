@@ -167,7 +167,10 @@
             <h2>Итого: <?= number_format($total, 2) ?> руб.</h2>
         </div>
 
-        <a href="/ordering" class="clear-cart-btn" style="display:inline-block; text-align:center;">Оформить заказ</a>
+    <a href="/ordering" class="clear-cart-btn" style="display:inline-block; text-align:center;">
+        Перейти к оформлению
+    </a>
+
 
     <?php endif; ?>
 </main>

@@ -3,6 +3,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Models\User;
+use App\Models\Order;
 
 class AuthController extends Controller {
 
@@ -92,13 +93,19 @@ class AuthController extends Controller {
     }
 
     public function account() {
-    if (!isset($_SESSION['user_id'])) {
-        header('Location: /login');
-        exit;
+        if (!isset($_SESSION['user_id'])) {
+            header('Location: /login');
+            exit;
+        }
+
+        $userId = $_SESSION['user_id'];
+        $user = \App\Models\User::getById($userId);
+        $orders = \App\Models\Order::getUserOrdersWithItems($userId);
+
+        $this->view('account', [
+            'user' => $user,
+            'orders' => $orders
+        ]);
     }
-
-    $user = \App\Models\User::getById($_SESSION['user_id']);
-    $this->view('account', ['user' => $user]);
 }
 
-}

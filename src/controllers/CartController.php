@@ -5,62 +5,44 @@ use App\Core\Controller;
 use App\Models\Cart;
 
 class CartController extends Controller {
+
     public function add() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        $userId = $_SESSION['user_id'];
         $productId = $_POST['product_id'] ?? null;
+        $userId = $_SESSION['user_id'] ?? null;
 
-        if (!$productId) {
+        if (!$productId || !is_numeric($productId)) {
             http_response_code(400);
-            echo "Missing product ID";
+            echo "Некорректный товар";
             return;
         }
 
         Cart::addToCart($userId, (int)$productId);
-        header('Location: /cart');
+        header('Location: ' . ($_SERVER['HTTP_REFERER'] ?? '/cart'));
         exit;
     }
 
     public function showCart() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
+        $userId = $_SESSION['user_id'] ?? null;
+        $sort = $_GET['sort'] ?? null;
 
-        $sort = $_GET['sort'] ?? null; // 'asc' или 'desc'
-        $items = Cart::getUserCartItems($_SESSION['user_id'], $sort);
+        $items = Cart::getUserCartItems($userId, $sort);
         $this->view('cart', ['items' => $items, 'sort' => $sort]);
     }
 
     public function remove() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        $userId = $_SESSION['user_id'];
         $productId = $_POST['product_id'] ?? null;
+        $userId = $_SESSION['user_id'] ?? null;
 
         if ($productId) {
-            \App\Models\Cart::removeFromCart($userId, (int)$productId);
+            Cart::removeFromCart($userId, (int)$productId);
         }
 
         header('Location: /cart');
         exit;
     }
 
-
     public function updateQuantity() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        $userId = $_SESSION['user_id'];
+        $userId = $_SESSION['user_id'] ?? null;
         $productId = $_POST['product_id'] ?? null;
         $quantity = $_POST['quantity'] ?? null;
 
@@ -73,14 +55,9 @@ class CartController extends Controller {
     }
 
     public function clear() {
-        if (!isset($_SESSION['user_id'])) {
-            header('Location: /login');
-            exit;
-        }
-
-        Cart::clearCart($_SESSION['user_id']);
+        $userId = $_SESSION['user_id'] ?? null;
+        Cart::clearCart($userId);
         header('Location: /cart');
         exit;
     }
-
 }
